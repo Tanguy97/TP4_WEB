@@ -16,20 +16,24 @@ export default props => {
   // 3- Réutilisez la composante PublicationTable
   // 4- Si on supprime une publication, la liste doit être mise à jour.
 
-  const [publication, setPubliation]= useState([])
+  
+  const url = 'http://localhost:3000/api/projects/' + props.match.params.id
+ 
+  const [publications, setPubliations]= useState([])
   const [project, setProject]= useState({})
   const [loading, setLoading]= useState(true)
 
+  const ret={proj:project,pub:publications}
   useEffect(()=>{
     const fetchProject = async()=>{
-      const reponse = await fetch('http://localhost:3000/api/projects',{'accept-language':'fr'})
-      const project = await reponse.json().map(val=>val["project"]);
-     
-      setProject(project)
+      const reponse = await fetch(url, {'accept-language':'fr'})
+      var project = await reponse.json();
+      setProject(project["project"])
+      setPubliations(project["publications"])
       setLoading(false)
-    }
+    } 
     fetchProject()
-  },[project])
+  },[ret.publications,ret.project])
 
 
   return pug`

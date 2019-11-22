@@ -32,22 +32,37 @@ const ProjectDescription = props => {
 
 export default () => {
 
-  const loading = false
-  const projects = []
-
   // À COMPLÉTER
   // 1- Récupérer les projets du service web http://localhost:3000/api/projects avec 'fetch' et avec l'entête 'accept-language' à 'fr'.
   // 2- Une fois que les données ont été récupérées, le loading devient false
   // 3- Vous remarquerez qu'on duplique la description de chaque projet dans le Pug.
   //    Évitez la duplication en créant une nouvelle composante React et insérez la dans le Pug ci-bas.
-
-  const currentProjects = projects
-    .filter(p => p.current)
-    .sort((p1, p2) => p1.year < p2.year ? 1 : p1.year > p2.year ? -1 : 0)
-  const pastProjects = projects
-    .filter(p => !p.current)
-    .sort((p1, p2) => p1.year < p2.year ? 1 : p1.year > p2.year ? -1 : 0)
-
+  
+  const [currentProjects, setCurrentProjects]= useState([])
+  const [pastProjects, setPastProjects]= useState([])
+  const [loading, setLoading]= useState(true)
+  
+  const url = 'http://localhost:3000/api/projects'
+ 
+  useEffect(()=>{
+    const fetchProjects = async()=>{
+      const reponse = await fetch(url, {'accept-language':'fr'})
+      const projects = await reponse.json();
+      const proj= projects.map(val=>val["project"])
+      setCurrentProjects(proj
+        .filter(p => p.current)
+        .sort((p1, p2) => p1.year < p2.year ? 1 : p1.year > p2.year ? -1 : 0)
+        )
+      setPastProjects(proj
+        .filter(p => !p.current)
+        .sort((p1, p2) => p1.year < p2.year ? 1 : p1.year > p2.year ? -1 : 0)
+        )
+      setLoading(false)
+      console.log(currentProjects)
+    }
+    fetchProjects()
+  },[])
+  console.log(currentProjects)
   return pug`
     .loading-container
       if loading

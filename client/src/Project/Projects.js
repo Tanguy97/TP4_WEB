@@ -31,16 +31,23 @@ const ProjectDescription = props => {
 }
 
 export default () => {
-
-  const loading = false
-  const projects = []
-
+  const url = "http://localhost:3000/api/projects"
+  const [projects,setProjects] = useState([])
+  const [loading,setLoading] = useState(false)
   // À COMPLÉTER
   // 1- Récupérer les projets du service web http://localhost:3000/api/projects avec 'fetch' et avec l'entête 'accept-language' à 'fr'.
   // 2- Une fois que les données ont été récupérées, le loading devient false
   // 3- Vous remarquerez qu'on duplique la description de chaque projet dans le Pug.
   //    Évitez la duplication en créant une nouvelle composante React et insérez la dans le Pug ci-bas.
-
+  useEffect(()=>{
+    const fetchProjects = async()=>{
+      const reponse = await fetch(url, {'accept-language':'fr'})
+      const projs = await reponse.json()
+      setProjects(projs)
+      setLoading(false)
+    }
+    fetchProjects()
+  },[])
   const currentProjects = projects
     .filter(p => p.current)
     .sort((p1, p2) => p1.year < p2.year ? 1 : p1.year > p2.year ? -1 : 0)

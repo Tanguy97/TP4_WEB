@@ -22,11 +22,9 @@ export default props => {
   // - Gestion du formulaire de création d'une publication.
   //   Si le formulaire a été correctement rempli, affichez la nouvelle publication dans la table.
   //   Si le serveur renvoie une erreur, alors affichez les erreurs.
-  const publications = {
-    count: 0,
-    publications: []
-  }
-
+  const [publications,setPublications] = useState({})
+  const url='http://localhost:3000/api/publications' + props.location.search
+  console.log(url)
   const showModal = true
 
   const pagingOptions = {
@@ -36,7 +34,7 @@ export default props => {
     'orderBy': 'desc'
   }
 
-  const loading = false
+  const [loading,setLoading] = useState(true)
 
   const errors = []
 
@@ -88,6 +86,16 @@ export default props => {
     })
     const newPagingOptions = { ...pagingOptions, 'pageNumber': Number(e.target.dataset.pagenumber) }
   }
+
+  useEffect(()=>{
+    const fetchFeed = async()=>{
+      const response = await fetch(url,{'accept-language':'fr'})
+      const pubs = await response.json()
+      setPublications(pubs)
+      setLoading(false)
+    }
+    fetchFeed()
+  },[])
 
   return pug`
     .loading-container

@@ -10,7 +10,6 @@ const fetch = window.fetch
 
 const ProjectDescription = props => {
   const project = props.project
-
   return pug`
     li
       span
@@ -69,21 +68,7 @@ export default () => {
         else
           ul.projects
             each project in currentProjects
-              li(key=project._id)
-                span
-                  = project.student
-                  | #{', '}
-
-                Link(to="/projects/" + project._id)= project.title
-                footer.meta
-                  p
-                    | Directeur(e): #{''}
-                    = project.supervisor
-
-                  if project.cosupervisor
-                    p
-                      | Co-directeur(e)(s): #{''}
-                      = project.cosupervisor
+              ProjectDescription(project=project)
 
         h1 Projets passés
 
@@ -93,20 +78,6 @@ export default () => {
         else
           ul.projects
             each project in pastProjects
-              li(key=project._id)
-                span
-                  = project.student
-                  | #{', '}
-
-                Link(to="/projects/" + project._id)= project.title
-                footer.meta
-                  p
-                    | Directeur(e): #{''}
-                    = project.supervisor
-
-                  if project.cosupervisor
-                    p
-                      | Co-directeur(e)(s): #{''}
-                      = project.cosupervisor
+              ProjectDescription(project=project)
   `
 }

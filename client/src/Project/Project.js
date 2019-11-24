@@ -26,7 +26,7 @@ export default props => {
   useEffect(()=>{
     const fetchProject = async()=>{
       const reponse = await fetch(url, {'accept-language':'fr'})
-      const proj = await reponse.json();
+      const proj = await reponse.json()
       setProject(proj["project"])
       setPublications(proj["publications"])
       setLoading(false)

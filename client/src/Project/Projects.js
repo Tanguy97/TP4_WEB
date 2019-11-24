@@ -32,7 +32,7 @@ const ProjectDescription = props => {
 export default () => {
   const url = "http://localhost:3000/api/projects"
   const [projects,setProjects] = useState([])
-  const [loading,setLoading] = useState(false)
+  const [loading,setLoading] = useState(true)
   // À COMPLÉTER
   // 1- Récupérer les projets du service web http://localhost:3000/api/projects avec 'fetch' et avec l'entête 'accept-language' à 'fr'.
   // 2- Une fois que les données ont été récupérées, le loading devient false

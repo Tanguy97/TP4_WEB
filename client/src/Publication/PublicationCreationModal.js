@@ -5,7 +5,9 @@ const moment = window.moment
 
 export default props => {
   const monthNames = moment.months()
-
+  const closeFormHandler = e =>{
+    console.log("close")
+  }
   const defaultFormData = {
     'year': '',
     'month': '',
@@ -19,7 +21,7 @@ export default props => {
   return pug`
     .modal(className="show-modal")
       .modal-content
-        i.fa.fa-window-close.fa-2x.close-button
+        i.fa.fa-window-close.fa-2x.close-button(onClick=closeFormHandler)
 
         h2 Création d'une publication
 
@@ -89,4 +91,3 @@ export default props => {
           input(type="submit", value="Création d'une publication")
   `
 }
-

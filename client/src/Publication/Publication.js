@@ -24,7 +24,7 @@ export default props => {
   //   Si le serveur renvoie une erreur, alors affichez les erreurs.
   const [publications,setPublications] = useState({})
   const url='http://localhost:3000/api/publications' + props.location.search
-  const showModal = true
+  const [showModal,setShowModal] = useState(false)
 
   const pagingOptions = {
     'limit': 10,
@@ -86,6 +86,10 @@ export default props => {
     const newPagingOptions = { ...pagingOptions, 'pageNumber': Number(e.target.dataset.pagenumber) }
   }
 
+  const addPublicationHandler = e => {
+    setShowModal(true)
+  }
+
   useEffect(()=>{
     const fetchFeed = async()=>{
       const response = await fetch(url,{'accept-language':'fr'})
@@ -94,7 +98,7 @@ export default props => {
       setLoading(false)
     }
     fetchFeed()
-  },[])
+  },[props.location.search])
 
   return pug`
     .loading-container
@@ -111,9 +115,9 @@ export default props => {
               each err, i in errors
                 li(key="error" + i)= err
 
-        button.trigger Ajouter une publication
-
-        //PublicationCreationModal()
+        button.trigger(onClick=addPublicationHandler) Ajouter une publication
+        if showModal
+          PublicationCreationModal()
 
         p
           | Trié par: #{''}

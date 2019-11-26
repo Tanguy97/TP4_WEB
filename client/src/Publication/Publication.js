@@ -23,7 +23,7 @@ export default props => {
   //   Si le formulaire a été correctement rempli, affichez la nouvelle publication dans la table.
   //   Si le serveur renvoie une erreur, alors affichez les erreurs.
   const [publications,setPublications] = useState({})
-  const url='http://localhost:3000/api/publications' + props.location.search
+  const url='http://localhost:3000/api/publications/' + props.location.search
   const [showModal,setShowModal] = useState(false)
 
   const pagingOptions = {
@@ -32,7 +32,7 @@ export default props => {
     'sortBy': 'date',
     'orderBy': 'desc'
   }
-
+  const [isDeleted,setIsDeleted]=useState(false)
   const [loading,setLoading] = useState(true)
 
   const errors = []
@@ -93,15 +93,27 @@ export default props => {
     setShowModal(true)
   }
 
+  const deletePublicationHandler = e =>{
+      const fetchDeletePublication = async() =>{
+        const id = e.target.parentNode.dataset.id
+        const res = await fetch(url+id,{method: 'delete'})
+      }
+      fetchDeletePublication()
+      setIsDeleted(true)
+
+  }
+
   useEffect(()=>{
     const fetchFeed = async()=>{
       const response = await fetch(url,{'accept-language':'fr'})
       const pubs = await response.json()
       setPublications(pubs)
+      setIsDeleted(false)
       setLoading(false)
     }
     fetchFeed()
-  },[props.location.search])
+  },[props.location.search,isDeleted])
+
 
   return pug`
     .loading-container
@@ -134,7 +146,7 @@ export default props => {
             option(value="desc") décroissant
             option(value="asc") croissant
 
-        PublicationTable(publications=publications.publications)
+        PublicationTable(publications=publications.publications,delete=deletePublicationHandler)
         .pagination
           a.pagination-link(data-pagenumber=previousPageNumber) &laquo;
           each page in [...Array(numberOfPages).keys()].map(p => p + 1)

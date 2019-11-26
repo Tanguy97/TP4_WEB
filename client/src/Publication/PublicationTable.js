@@ -6,13 +6,14 @@ const pug = window.pug
 
 export default props => {
   const publications = props.publications
+  const deletePublicationHandler = props.delete
   return pug`
   table.publications
           tbody
             each pub, i in publications
               tr(key=pub._id)
                 td
-                  .del-icon(data-id=pub._id) #[i.fa.fa-trash-o.fa-2x]
+                  .del-icon(data-id=pub._id,onClick=deletePublicationHandler) #[i.fa.fa-trash-o.fa-2x]
 
                 td
                   span.annee= pub.year

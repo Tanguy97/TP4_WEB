@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import Loader from '../Loader/Loader'
 
 import './Project.css'
-
+import PublicationTable from '../Publication/PublicationTable.js'
 const pug = window.pug
 const fetch = window.fetch
 
@@ -71,6 +71,6 @@ export default props => {
           if publications.length > 0
             h2 Publications
             // Utilisez la composante PublicationTable
-            <PublicationTable />
+            PublicationTable(publications=publications)
   `
 }

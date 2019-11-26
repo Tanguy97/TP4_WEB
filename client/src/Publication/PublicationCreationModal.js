@@ -6,6 +6,9 @@ const moment = window.moment
 export default props => {
   const monthNames = moment.months()
   const closeFormHandler = props.closeAction
+  let display
+  if(props.display) display="show-modal"
+  else display=""
   const defaultFormData = {
     'year': '',
     'month': '',
@@ -17,7 +20,7 @@ export default props => {
   const formData = defaultFormData
 
   return pug`
-    .modal(className="show-modal")
+    .modal(className=display)
       .modal-content
         i.fa.fa-window-close.fa-2x.close-button(onClick=closeFormHandler)
 

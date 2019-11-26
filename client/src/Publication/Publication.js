@@ -23,9 +23,7 @@ export default props => {
   //   Si le formulaire a été correctement rempli, affichez la nouvelle publication dans la table.
   //   Si le serveur renvoie une erreur, alors affichez les erreurs.
   const [publications,setPublications] = useState({})
-  console.log(props.location.search)
   const url='http://localhost:3000/api/publications' + props.location.search
-  console.log(url)
   const showModal = true
 
   const pagingOptions = {
@@ -129,7 +127,7 @@ export default props => {
             option(value="desc") décroissant
             option(value="asc") croissant
 
-        PublicationTable(publications=publications)
+        PublicationTable(publications=publications.publications)
         .pagination
           a.pagination-link(data-pagenumber=previousPageNumber) &laquo;
           each page in [...Array(numberOfPages).keys()].map(p => p + 1)

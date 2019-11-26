@@ -5,11 +5,11 @@ import './PublicationTable.css'
 const pug = window.pug
 
 export default props => {
-  const p = props.publication
+  const publications = props.publications
   return pug`
   table.publications
           tbody
-            each pub, i in publications.publications
+            each pub, i in publications
               tr(key=pub._id)
                 td
                   .del-icon(data-id=pub._id) #[i.fa.fa-trash-o.fa-2x]

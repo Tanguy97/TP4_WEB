@@ -5,9 +5,7 @@ const moment = window.moment
 
 export default props => {
   const monthNames = moment.months()
-  const closeFormHandler = e =>{
-    console.log("close")
-  }
+  const closeFormHandler = props.closeAction
   const defaultFormData = {
     'year': '',
     'month': '',

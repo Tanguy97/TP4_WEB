@@ -85,6 +85,9 @@ export default props => {
     })
     const newPagingOptions = { ...pagingOptions, 'pageNumber': Number(e.target.dataset.pagenumber) }
   }
+  const closeHandler = () =>{
+    setShowModal(false)
+  }
 
   const addPublicationHandler = e => {
     setShowModal(true)
@@ -117,7 +120,7 @@ export default props => {
 
         button.trigger(onClick=addPublicationHandler) Ajouter une publication
         if showModal
-          PublicationCreationModal()
+          PublicationCreationModal(closeAction=closeHandler)
 
         p
           | Trié par: #{''}

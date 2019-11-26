@@ -15,17 +15,17 @@ export default () => {
 
   const [feeds, setFeeds]= useState([])
   const [loading, setLoading]= useState(true)
-
+  const url = 'http://localhost:3000/api/feed'
   useEffect(()=>{
     const fetchfeed = async()=>{
       console.log('hello home')
-      const reponse = await fetch('http://localhost:3000/api/feed',{'accept-language':'fr'})
-      const feeds = await reponse.json();
+      const reponse = await fetch(url,{'accept-language':'fr'})
+      const feeds = await reponse.json()
       setFeeds(feeds)
       setLoading(false)
     }
-    fetchfeed() 
-  },[]) 
+    fetchfeed()
+  },[])
 
   return pug`
     .jumbotron

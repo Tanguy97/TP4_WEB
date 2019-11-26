@@ -10,7 +10,6 @@ const fetch = window.fetch
 
 const ProjectDescription = props => {
   const project = props.project
-
   return pug`
     li
       span
@@ -31,12 +30,19 @@ const ProjectDescription = props => {
 }
 
 export default () => {
+<<<<<<< HEAD
 
+=======
+  const url = "http://localhost:3000/api/projects"
+  const [projects,setProjects] = useState([])
+  const [loading,setLoading] = useState(true)
+>>>>>>> 342dd897fd7ba04ee61faf09dc1b200694bfd939
   // À COMPLÉTER
   // 1- Récupérer les projets du service web http://localhost:3000/api/projects avec 'fetch' et avec l'entête 'accept-language' à 'fr'.
   // 2- Une fois que les données ont été récupérées, le loading devient false
   // 3- Vous remarquerez qu'on duplique la description de chaque projet dans le Pug.
   //    Évitez la duplication en créant une nouvelle composante React et insérez la dans le Pug ci-bas.
+<<<<<<< HEAD
   
   const [currentProjects, setCurrentProjects]= useState([])
   const [pastProjects, setPastProjects]= useState([])
@@ -63,6 +69,24 @@ export default () => {
     fetchProjects()
   },[])
   console.log(currentProjects)
+=======
+  useEffect(()=>{
+    const fetchProjects = async()=>{
+      const reponse = await fetch(url, {'accept-language':'fr'})
+      const projs = await reponse.json()
+      setProjects(projs)
+      setLoading(false)
+    }
+    fetchProjects()
+  },[])
+  const currentProjects = projects
+    .filter(p => p.current)
+    .sort((p1, p2) => p1.year < p2.year ? 1 : p1.year > p2.year ? -1 : 0)
+  const pastProjects = projects
+    .filter(p => !p.current)
+    .sort((p1, p2) => p1.year < p2.year ? 1 : p1.year > p2.year ? -1 : 0)
+
+>>>>>>> 342dd897fd7ba04ee61faf09dc1b200694bfd939
   return pug`
     .loading-container
       if loading
@@ -77,21 +101,7 @@ export default () => {
         else
           ul.projects
             each project in currentProjects
-              li(key=project._id)
-                span
-                  = project.student
-                  | #{', '}
-
-                Link(to="/projects/" + project._id)= project.title
-                footer.meta
-                  p
-                    | Directeur(e): #{''}
-                    = project.supervisor
-
-                  if project.cosupervisor
-                    p
-                      | Co-directeur(e)(s): #{''}
-                      = project.cosupervisor
+              ProjectDescription(project=project)
 
         h1 Projets passés
 
@@ -101,20 +111,6 @@ export default () => {
         else
           ul.projects
             each project in pastProjects
-              li(key=project._id)
-                span
-                  = project.student
-                  | #{', '}
-
-                Link(to="/projects/" + project._id)= project.title
-                footer.meta
-                  p
-                    | Directeur(e): #{''}
-                    = project.supervisor
-
-                  if project.cosupervisor
-                    p
-                      | Co-directeur(e)(s): #{''}
-                      = project.cosupervisor
+              ProjectDescription(project=project)
   `
 }

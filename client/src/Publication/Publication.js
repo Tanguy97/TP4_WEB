@@ -23,6 +23,7 @@ export default props => {
   //   Si le formulaire a été correctement rempli, affichez la nouvelle publication dans la table.
   //   Si le serveur renvoie une erreur, alors affichez les erreurs.
   const [publications,setPublications] = useState({})
+  console.log(props.location.search)
   const url='http://localhost:3000/api/publications' + props.location.search
   console.log(url)
   const showModal = true
@@ -114,7 +115,7 @@ export default props => {
 
         button.trigger Ajouter une publication
 
-        PublicationCreationModal()
+        //PublicationCreationModal()
 
         p
           | Trié par: #{''}
@@ -128,31 +129,7 @@ export default props => {
             option(value="desc") décroissant
             option(value="asc") croissant
 
-        table.publications
-          tbody
-            each pub, i in publications.publications
-              tr(key=pub._id)
-                td
-                  .del-icon(data-id=pub._id) #[i.fa.fa-trash-o.fa-2x]
-
-                td
-                  span.annee= pub.year
-
-                  br
-
-                  if pub.month
-                    span.mois= pub.month
-
-                td.publication
-                  p.pubtitle= pub.title
-
-                  p.authors= pub.authors.join(', ')
-
-                  p.venuetype
-
-                  p.venue
-                    i= pub.venue
-
+        PublicationTable(publications=publications)
         .pagination
           a.pagination-link(data-pagenumber=previousPageNumber) &laquo;
           each page in [...Array(numberOfPages).keys()].map(p => p + 1)

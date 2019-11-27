@@ -93,6 +93,21 @@ export default props => {
     setShowModal(true)
   }
 
+
+  const submitHandler = e =>{
+    const fetchSubmitedPublication= async()=>{
+      // comment faire appel aux inputs?
+      // const data= {year: props.year,
+      //             month: props.month,
+      //             authors: props.authors ,
+      //             title: props.title,
+      //             venue: props.venue
+      //             }
+      const submited= await fetch(url, {method:'post',body: JSON.stringify(data)})
+    }
+    fetchSubmitedPublication();
+  }
+
   const deletePublicationHandler = e =>{
       const fetchDeletePublication = async() =>{
         const id = e.target.parentNode.dataset.id
@@ -132,7 +147,7 @@ export default props => {
 
         button.trigger(onClick=addPublicationHandler) Ajouter une publication
         if showModal
-          PublicationCreationModal(closeAction=closeHandler)
+          PublicationCreationModal(closeAction=closeHandler,submit=submitHandler)
 
         p
           | Trié par: #{''}

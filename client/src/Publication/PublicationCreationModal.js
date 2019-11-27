@@ -6,15 +6,39 @@ const moment = window.moment
 export default props => {
   const monthNames = moment.months()
   const closeFormHandler = props.closeAction
-  const defaultFormData = {
-    'year': '',
-    'month': '',
-    'title': '',
-    'authors': [''],
-    'venue': ''
-  }
+  const submitHandler = props.submit
 
-  const formData = defaultFormData
+  const inputHandlerYear = e =>{
+    console.log(e.target.value)
+    setYear(e.target.value)
+    props.year=e.target.value
+  }
+  const inputHandlerMonth = e =>{
+    console.log(e.target.value)
+    setMonth(e.target.value)
+    props.month=e.target.value
+  } 
+  const inputHandlerVenue = e =>{
+    console.log(e.target.value)
+    setVenue(e.target.value)
+    props.venue=e.target.value
+  } 
+  const inputHandlerAuthors = e =>{
+    console.log(e.target.value)
+    setAuthors(e.target.value)
+    props.authors=e.target.value
+  } 
+  const inputHandlerTitle = e =>{
+    console.log(e.target.value)
+    setTitle(e.target.value)
+    props.title=e.target.value
+  }
+  
+  const [year, setYear]=useState('2000')
+  const [month,setMonth]=useState('0')
+  const [title, setTitle]=useState('test title')  
+  const [venue, setVenue]=useState('test venue')  
+  const [authors, setAuthors]=useState(['test author']) 
 
   return pug`
     .modal(className="show-modal")
@@ -23,7 +47,7 @@ export default props => {
 
         h2 Création d'une publication
 
-        form
+        form(onSubmit=submitHandler)
           label(for="year") Année:
 
           input(
@@ -32,14 +56,16 @@ export default props => {
             min="1900",
             max="2099",
             step="1",
-            value=formData.year,
-            placeholder="Année")
+            value=year,
+            placeholder="Année",
+            onChange= inputHandlerYear
+            )
 
           br
 
           label(for="month") Mois #{' '}
 
-          select(name="month", value=formData.month)
+          select(name="month", value=month, onChange= inputHandlerMonth)
             option(value="")
               | - #{' '} Mois - #{' '}
 
@@ -53,7 +79,8 @@ export default props => {
           input(type="text",
             name="title",
             placeholder="Titre",
-            value=formData.title)
+            value=title,
+            onChange= inputHandlerTitle)
 
           br
 
@@ -61,13 +88,14 @@ export default props => {
 
           br
 
-          each author, i in formData.authors
+          each author, i in authors
             .author-input(key="div" + author)
               input(
                 type="text",
                 name="authors[]"
                 placeholder="Auteur",
-                value=author)
+                value=authors,
+                onChange= inputHandlerAuthors)
 
             if i > 0
               .remove-author
@@ -82,7 +110,8 @@ export default props => {
             type="text",
             name="venue",
             placeholder="Revue",
-            value=formData.venue)
+            value=venue,
+            onChange= inputHandlerVenue)
 
           br
 

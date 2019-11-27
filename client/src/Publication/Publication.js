@@ -35,7 +35,7 @@ export default props => {
   const [isDeleted,setIsDeleted]=useState(false)
   const [loading,setLoading] = useState(true)
 
-  const errors = []
+  const [errors,setErrors] = useState([])
 
   const numberOfPages = Math.ceil(publications.count / pagingOptions.limit)
 
@@ -85,10 +85,13 @@ export default props => {
     })
     const newPagingOptions = { ...pagingOptions, 'pageNumber': Number(e.target.dataset.pagenumber) }
   }
+
+  //Fonction qui ferme la fenetre de creation d'une publication
   const closeHandler = () =>{
     setShowModal(false)
   }
 
+  //Fonction qui ouvre la fenetre de creation d'une publication
   const addPublicationHandler = e => {
     setShowModal(true)
   }
@@ -108,6 +111,7 @@ export default props => {
     fetchSubmitedPublication();
   }
 
+  //Fonction qui supprime une publication
   const deletePublicationHandler = e =>{
       const fetchDeletePublication = async() =>{
         const id = e.target.parentNode.dataset.id
@@ -115,7 +119,6 @@ export default props => {
       }
       fetchDeletePublication()
       setIsDeleted(true)
-
   }
 
   useEffect(()=>{
@@ -146,8 +149,7 @@ export default props => {
                 li(key="error" + i)= err
 
         button.trigger(onClick=addPublicationHandler) Ajouter une publication
-        if showModal
-          PublicationCreationModal(closeAction=closeHandler,submit=submitHandler)
+        PublicationCreationModal(closeAction=closeHandler,display=showModal)
 
         p
           | Trié par: #{''}

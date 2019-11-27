@@ -7,31 +7,29 @@ export default props => {
   const monthNames = moment.months()
   const closeFormHandler = props.closeAction
   const submitHandler = props.submit
+  let display
+  if(props.display) display="show-modal"
+  else display=""
 
   const inputHandlerYear = e =>{
     console.log(e.target.value)
     setYear(e.target.value)
-    props.year=e.target.value
   }
   const inputHandlerMonth = e =>{
     console.log(e.target.value)
     setMonth(e.target.value)
-    props.month=e.target.value
   } 
   const inputHandlerVenue = e =>{
     console.log(e.target.value)
     setVenue(e.target.value)
-    props.venue=e.target.value
   } 
   const inputHandlerAuthors = e =>{
     console.log(e.target.value)
     setAuthors(e.target.value)
-    props.authors=e.target.value
   } 
   const inputHandlerTitle = e =>{
     console.log(e.target.value)
     setTitle(e.target.value)
-    props.title=e.target.value
   }
   
   const [year, setYear]=useState('2000')
@@ -41,7 +39,7 @@ export default props => {
   const [authors, setAuthors]=useState(['test author']) 
 
   return pug`
-    .modal(className="show-modal")
+    .modal(className=display)
       .modal-content
         i.fa.fa-window-close.fa-2x.close-button(onClick=closeFormHandler)
 

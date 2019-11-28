@@ -96,8 +96,9 @@ export default props => {
     setShowModal(true)
   }
 
-
-  
+  const addErrors = err =>{
+    setErrors(err)
+  }
 
   //Fonction qui supprime une publication
   const deletePublicationHandler = e =>{
@@ -118,7 +119,7 @@ export default props => {
       setLoading(false)
     }
     fetchFeed()
-  },[props.location.search,isDeleted])
+  },[props.location.search,isDeleted,showModal])
 
 
   return pug`
@@ -137,7 +138,7 @@ export default props => {
                 li(key="error" + i)= err
 
         button.trigger(onClick=addPublicationHandler) Ajouter une publication
-        PublicationCreationModal(closeAction=closeHandler,display=showModal)
+        PublicationCreationModal(closeAction=closeHandler,display=showModal,err=addErrors)
 
         p
           | Trié par: #{''}

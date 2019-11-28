@@ -6,6 +6,7 @@ const moment = window.moment
 export default props => {
   const monthNames = moment.months()
   const closeFormHandler = props.closeAction
+  const err = props.err
   let display
   if(props.display) display="show-modal"
   else display=""
@@ -72,12 +73,14 @@ export default props => {
                   }
       console.log(data)
       const submited= await fetch('http://localhost:3000/api/publications/', {method:'post',headers: {
-    'Content-Type': 'application/json;charset=utf-8'
-  },body: JSON.stringify(data)})
-      console.log(submited)
+    'Content-Type': 'application/json;charset=utf-8'},body: JSON.stringify(data)})
+      const res = await submited.json()
+      err(res.errors)
+      console.log(res)
     }
 
     fetchSubmitedPublication()
+    closeFormHandler()
   }
 
   return pug`

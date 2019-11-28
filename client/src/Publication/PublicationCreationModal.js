@@ -6,7 +6,6 @@ const moment = window.moment
 export default props => {
   const monthNames = moment.months()
   const closeFormHandler = props.closeAction
-  const submitHandler = props.submit
   let display
   if(props.display) display="show-modal"
   else display=""
@@ -60,6 +59,24 @@ export default props => {
     setTitle(e.target.value)
   }
 
+  const submitHandler = e =>{
+   
+    console.log('hello')  
+    const fetchSubmitedPublication= async()=>{
+      const data= {year: year,
+                   month: month,
+                   authors: authors,
+                   title: title,
+                   venue: venue
+                  }
+      console.log('hello')                   
+      const submited= await fetch('http://localhost:3000/api/publications/', {method:'post',body: JSON.stringify(data)})
+      
+    }
+
+    fetchSubmitedPublication();
+    e.preventDefault()
+  }
 
   return pug`
     .modal(className=display)
@@ -68,7 +85,7 @@ export default props => {
 
         h2 Création d'une publication
 
-        form(onSubmit=submitHandler)
+        form(method='POST',onSubmit=submitHandler)
           label(for="year") Année:
 
           input(

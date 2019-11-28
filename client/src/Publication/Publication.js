@@ -97,22 +97,7 @@ export default props => {
   }
 
 
-  const submitHandler = e =>{
-    const fetchSubmitedPublication= async()=>{
-      
-      var searchParams = new URLSearchParams(props.location.search);
-      // comment faire appel aux inputs?
-       const data= {year: searchParams.get(year),
-                   month: searchParams.get(month),
-                   authors: searchParams.get(authors) ,
-                   title: searchParams.get(title),
-                   venue: searchParams.get(venue)
-                   }
-        console.log(data)
-      const submited= await fetch(url, {method:'post',body: JSON.stringify(data)})
-    }
-    fetchSubmitedPublication();
-  }
+  
 
   //Fonction qui supprime une publication
   const deletePublicationHandler = e =>{
@@ -131,7 +116,6 @@ export default props => {
       setPublications(pubs)
       setIsDeleted(false)
       setLoading(false)
-      var searchParams = new URLSearchParams(props.location.search);
     }
     fetchFeed()
   },[props.location.search,isDeleted])
@@ -174,7 +158,8 @@ export default props => {
             a.pagination-link(
               key="pagination-link-" + page,
               className=page == pagingOptions.pageNumber ? "active" : "",
-              data-pagenumber=page)= page
+              data-pagenumber=page,
+              onClick=paginationClickHandler)= page
 
           a.pagination-link(data-pagenumber=nextPageNumber) &raquo;
 

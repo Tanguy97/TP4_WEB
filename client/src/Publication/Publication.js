@@ -99,15 +99,16 @@ export default props => {
 
   const submitHandler = e =>{
     const fetchSubmitedPublication= async()=>{
-      const search_params = props.location.search
-      conole.log(props.location.search)
+      
+      var searchParams = new URLSearchParams(props.location.search);
       // comment faire appel aux inputs?
-      // const data= {year: props.year,
-      //             month: props.month,
-      //             authors: props.authors ,
-      //             title: props.title,
-      //             venue: props.venue
-      //             }
+       const data= {year: searchParams.get(year),
+                   month: searchParams.get(month),
+                   authors: searchParams.get(authors) ,
+                   title: searchParams.get(title),
+                   venue: searchParams.get(venue)
+                   }
+        console.log(data)
       const submited= await fetch(url, {method:'post',body: JSON.stringify(data)})
     }
     fetchSubmitedPublication();
@@ -130,6 +131,7 @@ export default props => {
       setPublications(pubs)
       setIsDeleted(false)
       setLoading(false)
+      var searchParams = new URLSearchParams(props.location.search);
     }
     fetchFeed()
   },[props.location.search,isDeleted])

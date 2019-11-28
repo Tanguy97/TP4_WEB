@@ -11,6 +11,12 @@ export default props => {
   if(props.display) display="show-modal"
   else display=""
 
+  const [year, setYear]=useState('2000')
+  const [month,setMonth]=useState('0')
+  const [title, setTitle]=useState('test title')
+  const [venue, setVenue]=useState('test venue')
+  const [authors, setAuthors]=useState(['test'])
+
   const inputHandlerYear = e =>{
     console.log(e.target.value)
     setYear(e.target.value)
@@ -18,33 +24,36 @@ export default props => {
   const inputHandlerMonth = e =>{
     console.log(e.target.value)
     setMonth(e.target.value)
-  } 
+  }
   const inputHandlerVenue = e =>{
     console.log(e.target.value)
     setVenue(e.target.value)
-  } 
+  }
+  const addAuthor = e =>{
+    authors.push('test')
+    console.log(authors)
+    setAuthors(authors)
+  }
+
+  const removeAuthor = e =>{
+    console.log(e.target.dataset.id)
+    setAuthors(authors.filter((a,i)=> i!=e.target.dataset.id))
+    console.log(authors)
+  }
+
+  const inputHandlerAuthor = e =>{
+    console.log(e.target.value)
+    setAuthors(authors.map((a,i)=>{
+      if(i==e.target.dataset.id) return e.target.value
+      else return a
+    }))
+    console.log(authors)
+  }
   const inputHandlerTitle = e =>{
     console.log(e.target.value)
     setTitle(e.target.value)
   }
-  const inputHandlerAuthor = e =>{
-    console.log(author)
-    setAuthor(e.target.value)
-  } 
-  const inputHandlerAuthors = e =>{
-    console.log(authors)
-    setAuthors([author])
-  }
-  const addAuthorHandler =e =>{
-    setAuthors(authors.push(author))
-  }
-  
-  const [year, setYear]=useState('')
-  const [month,setMonth]=useState('')
-  const [title, setTitle]=useState('')  
-  const [venue, setVenue]=useState('')  
-  const [author, setAuthor]=useState('') 
-  const [authors, setAuthors]=useState([]) 
+
 
   return pug`
     .modal(className=display)
@@ -64,7 +73,7 @@ export default props => {
             step="1",
             value=year,
             placeholder="Année",
-            onChange= inputHandlerYear
+            onChange= inputHandlerYear,
             )
 
           br
@@ -95,21 +104,21 @@ export default props => {
           br
 
           each author, i in authors
-            if i=0
             .author-input(key="div" + author)
               input(
                 type="text",
                 name="authors[]"
                 placeholder="Auteur",
                 value=author,
-                onChange= inputHandlerAuthor)
-            
+                onChange= inputHandlerAuthor,
+                data-id=i)
+
             if i > 0
               .remove-author
-                i.fa.fa-minus.fa-3x
+                i.fa.fa-minus.fa-3x(data-id=i,onClick=removeAuthor)
 
-          .add-author(onClick=inputHandlerAuthors)
-            i.fa.fa-plus.fa-3x
+          .add-author
+            i.fa.fa-plus.fa-3x(onClick=addAuthor)
 
           label(for="venue") Revue #{''}
 
@@ -121,7 +130,7 @@ export default props => {
             onChange= inputHandlerVenue)
 
           br
- 
+
           input(type="submit", value="Création d'une publication")
   `
 }

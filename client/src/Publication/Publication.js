@@ -99,15 +99,16 @@ export default props => {
 
   const submitHandler = e =>{
     const fetchSubmitedPublication= async()=>{
+      const search_params = props.location.search
+      conole.log(props.location.search)
       // comment faire appel aux inputs?
-      const params = new URLSearchParams(props.location.search); 
-      const data= {year:  params.get('year'),
-                  month:  params.get('month'),
-                  authors:  params.get('authors') ,
-                  title: params.get('title'),
-                  venue: params.get('venue')
-                  }
-      const submited= await fetch(url, {method:'post',body: data})
+      // const data= {year: props.year,
+      //             month: props.month,
+      //             authors: props.authors ,
+      //             title: props.title,
+      //             venue: props.venue
+      //             }
+      const submited= await fetch(url, {method:'post',body: JSON.stringify(data)})
     }
     fetchSubmitedPublication();
   }
@@ -129,14 +130,6 @@ export default props => {
       setPublications(pubs)
       setIsDeleted(false)
       setLoading(false)
-      const params = new URLSearchParams(props.location.search); 
-      const data= {year:  params.get('year'),
-                  month:  params.get('month'),
-                  authors:  params.get('authors') ,
-                  title: params.get('title'),
-                  venue: params.get('venue')
-                  }
-      console.log(data)
     }
     fetchFeed()
   },[props.location.search,isDeleted])

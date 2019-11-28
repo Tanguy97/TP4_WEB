@@ -60,8 +60,9 @@ export default props => {
   }
 
   const submitHandler = e =>{
-   
-    console.log('hello')  
+
+    console.log('hello')
+    e.preventDefault()
     const fetchSubmitedPublication= async()=>{
       const data= {year: year,
                    month: month,
@@ -69,13 +70,14 @@ export default props => {
                    title: title,
                    venue: venue
                   }
-      console.log('hello')                   
-      const submited= await fetch('http://localhost:3000/api/publications/', {method:'post',body: JSON.stringify(data)})
-      
+      console.log(data)
+      const submited= await fetch('http://localhost:3000/api/publications/', {method:'post',headers: {
+    'Content-Type': 'application/json;charset=utf-8'
+  },body: JSON.stringify(data)})
+      console.log(submited)
     }
 
-    fetchSubmitedPublication();
-    e.preventDefault()
+    fetchSubmitedPublication()
   }
 
   return pug`

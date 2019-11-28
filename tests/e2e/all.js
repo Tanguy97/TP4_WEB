@@ -114,6 +114,7 @@ module.exports = {
       .assert.elementNotPresent('#projects-link.active', "Le menu de la page de projets n'est pas sélectionné.")
       .assert.elementPresent('#publications-link.active', "Le menu de la page de publications est sélectionné.")
 
+    client.pause(1000)
     client.expect.element('.modal').to.not.be.visible
     client
       .click('button.trigger', () => {

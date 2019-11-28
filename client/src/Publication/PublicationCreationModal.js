@@ -23,20 +23,28 @@ export default props => {
     console.log(e.target.value)
     setVenue(e.target.value)
   } 
-  const inputHandlerAuthors = e =>{
-    console.log(e.target.value)
-    setAuthors(e.target.value)
-  } 
   const inputHandlerTitle = e =>{
     console.log(e.target.value)
     setTitle(e.target.value)
   }
+  const inputHandlerAuthor = e =>{
+    console.log(author)
+    setAuthor(e.target.value)
+  } 
+  const inputHandlerAuthors = e =>{
+    console.log(authors)
+    setAuthors([author])
+  }
+  const addAuthorHandler =e =>{
+    setAuthors(authors.push(author))
+  }
   
-  const [year, setYear]=useState('2000')
-  const [month,setMonth]=useState('0')
-  const [title, setTitle]=useState('test title')  
-  const [venue, setVenue]=useState('test venue')  
-  const [authors, setAuthors]=useState(['test author']) 
+  const [year, setYear]=useState('')
+  const [month,setMonth]=useState('')
+  const [title, setTitle]=useState('')  
+  const [venue, setVenue]=useState('')  
+  const [author, setAuthor]=useState('') 
+  const [authors, setAuthors]=useState([]) 
 
   return pug`
     .modal(className=display)
@@ -87,19 +95,20 @@ export default props => {
           br
 
           each author, i in authors
+            if i=0
             .author-input(key="div" + author)
               input(
                 type="text",
                 name="authors[]"
                 placeholder="Auteur",
-                value=authors,
-                onChange= inputHandlerAuthors)
-
+                value=author,
+                onChange= inputHandlerAuthor)
+            
             if i > 0
               .remove-author
                 i.fa.fa-minus.fa-3x
 
-          .add-author
+          .add-author(onClick=inputHandlerAuthors)
             i.fa.fa-plus.fa-3x
 
           label(for="venue") Revue #{''}
@@ -112,7 +121,7 @@ export default props => {
             onChange= inputHandlerVenue)
 
           br
-
+ 
           input(type="submit", value="Création d'une publication")
   `
 }

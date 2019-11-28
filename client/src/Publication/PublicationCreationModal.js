@@ -21,18 +21,20 @@ export default props => {
     console.log(e.target.value)
     setYear(e.target.value)
   }
+
   const inputHandlerMonth = e =>{
     console.log(e.target.value)
     setMonth(e.target.value)
   }
+
   const inputHandlerVenue = e =>{
     console.log(e.target.value)
     setVenue(e.target.value)
   }
+
   const addAuthor = e =>{
-    authors.push('test')
     console.log(authors)
-    setAuthors(authors)
+    setAuthors(authors.concat(['test']))
   }
 
   const removeAuthor = e =>{
@@ -43,12 +45,16 @@ export default props => {
 
   const inputHandlerAuthor = e =>{
     console.log(e.target.value)
-    setAuthors(authors.map((a,i)=>{
-      if(i==e.target.dataset.id) return e.target.value
-      else return a
-    }))
-    console.log(authors)
+    const newAuthors = [...authors]
+    newAuthors[e.target.dataset.id] = e.target.value
+    // setAuthors(authors.map((a,i)=>{
+    //   if(i==e.target.dataset.id) return e.target.value
+    //   else return a
+    // }))
+    setAuthors(newAuthors)
+    console.log([...authors])
   }
+
   const inputHandlerTitle = e =>{
     console.log(e.target.value)
     setTitle(e.target.value)
@@ -104,13 +110,13 @@ export default props => {
           br
 
           each author, i in authors
-            .author-input(key="div" + author)
+            .author-input(key="div" + i)
               input(
                 type="text",
                 name="authors[]"
                 placeholder="Auteur",
                 value=author,
-                onChange= inputHandlerAuthor,
+                onChange=inputHandlerAuthor,
                 data-id=i)
 
             if i > 0

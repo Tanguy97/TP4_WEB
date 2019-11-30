@@ -268,6 +268,7 @@ module.exports = {
       .setValue('input[name=venue]', 'WS Conference')
 
     client.submitForm('.modal form')
+    client.pause(1000)
     client.expect.element('#fieldFilterSection').to.have.value.that.equals('date')
     client.expect.element('#filterAscValueSection').to.have.value.that.equals('asc')
     client.assert.elementPresent('.pagination .pagination-link.active:nth-child(2)')

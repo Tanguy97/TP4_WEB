@@ -26,19 +26,18 @@ export default props => {
   const url='http://localhost:3000/api/publications/' + props.location.search
   const [showModal,setShowModal] = useState(false)
 
-  const pagingOptions = {
+  const [pagingOptions,setPagingOptions] = useState({
     'limit': 10,
     'pageNumber': 1,
     'sortBy': 'date',
     'orderBy': 'desc'
-  }
+  })
   const [isDeleted,setIsDeleted]=useState(false)
   const [loading,setLoading] = useState(true)
 
   const [errors,setErrors] = useState([])
 
   const numberOfPages = Math.ceil(publications.count / pagingOptions.limit)
-
   const previousPageNumber = pagingOptions.pageNumber === 1 ? pagingOptions.pageNumber : pagingOptions.pageNumber - 1
   const nextPageNumber = pagingOptions.pageNumber === numberOfPages ? pagingOptions.pageNumber : pagingOptions.pageNumber + 1
 
@@ -50,7 +49,7 @@ export default props => {
       pathname: props.location.pathname,
       search: '?' + search_params.toString()
     })
-    const newPagingOptions = { ...pagingOptions, 'sortBy': e.target.value }
+    setPagingOptions({ ...pagingOptions, 'sortBy': e.target.value })
   }
 
   // Fonction à exécuter si on change l'ordre de trie: order_by
@@ -61,7 +60,7 @@ export default props => {
       pathname: props.location.pathname,
       search: '?' + search_params.toString()
     })
-    const newPagingOptions = { ...pagingOptions, 'orderBy': e.target.value }
+    setPagingOptions({ ...pagingOptions, 'orderBy': e.target.value })
   }
 
   const elementsPerPageHandler = e => {
@@ -72,7 +71,7 @@ export default props => {
       pathname: props.location.pathname,
       search: '?' + search_params.toString()
     })
-    const newPagingOption = { ...pagingOptions, 'limit': Number(e.target.value), 'pageNumber': 1 }
+    setPagingOptions({ ...pagingOptions, 'limit': Number(e.target.value), 'pageNumber': 1 })
   }
 
   const paginationClickHandler = e => {
@@ -83,7 +82,7 @@ export default props => {
       pathname: props.location.pathname,
       search: '?' + search_params.toString()
     })
-    const newPagingOptions = { ...pagingOptions, 'pageNumber': Number(e.target.dataset.pagenumber) }
+    setPagingOptions({ ...pagingOptions, 'pageNumber': Number(e.target.dataset.pagenumber) })
   }
 
   //Fonction qui ferme la fenetre de creation d'une publication
@@ -97,14 +96,16 @@ export default props => {
   }
 
   const addErrors = err =>{
+    if(err==undefined) err=[]
     setErrors(err)
   }
 
   //Fonction qui supprime une publication
   const deletePublicationHandler = e =>{
+      const urlDelete='http://localhost:3000/api/publications/'
       const fetchDeletePublication = async() =>{
         const id = e.target.parentNode.dataset.id
-        const res = await fetch(url+id,{method: 'delete'})
+        const res = await fetch(urlDelete+id,{method: 'delete'})
       }
       fetchDeletePublication()
       setIsDeleted(true)
@@ -154,7 +155,7 @@ export default props => {
 
         PublicationTable(publications=publications.publications,delete=deletePublicationHandler)
         .pagination
-          a.pagination-link(data-pagenumber=previousPageNumber) &laquo;
+          a.pagination-link(data-pagenumber=previousPageNumber,onClick=paginationClickHandler) &laquo;
           each page in [...Array(numberOfPages).keys()].map(p => p + 1)
             a.pagination-link(
               key="pagination-link-" + page,
@@ -162,11 +163,11 @@ export default props => {
               data-pagenumber=page,
               onClick=paginationClickHandler)= page
 
-          a.pagination-link(data-pagenumber=nextPageNumber) &raquo;
+          a.pagination-link(data-pagenumber=nextPageNumber,onClick=paginationClickHandler) &raquo;
 
           p
             | Afficher
-            select#elementsPerPageSection(defaultValue=pagingOptions.limit)
+            select#elementsPerPageSection(defaultValue=pagingOptions.limit,onClick=elementsPerPageHandler)
               each value in [10, 20, 30, 50, 100]
                 option(key="option" + value, value=value)= value
 

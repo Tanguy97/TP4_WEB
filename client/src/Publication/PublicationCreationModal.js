@@ -12,57 +12,42 @@ export default props => {
   else display=""
 
   const [year, setYear]=useState('2000')
-  const [month,setMonth]=useState('0')
+  const [month,setMonth]=useState('')
   const [title, setTitle]=useState('test title')
   const [venue, setVenue]=useState('test venue')
   const [authors, setAuthors]=useState(['test'])
 
   const inputHandlerYear = e =>{
-    console.log(e.target.value)
     setYear(e.target.value)
   }
 
   const inputHandlerMonth = e =>{
-    console.log(e.target.value)
     setMonth(e.target.value)
   }
 
   const inputHandlerVenue = e =>{
-    console.log(e.target.value)
     setVenue(e.target.value)
   }
 
   const addAuthor = e =>{
-    console.log(authors)
     setAuthors(authors.concat(['test']))
   }
 
   const removeAuthor = e =>{
-    console.log(e.target.dataset.id)
     setAuthors(authors.filter((a,i)=> i!=e.target.dataset.id))
-    console.log(authors)
   }
 
   const inputHandlerAuthor = e =>{
-    console.log(e.target.value)
     const newAuthors = [...authors]
     newAuthors[e.target.dataset.id] = e.target.value
-    // setAuthors(authors.map((a,i)=>{
-    //   if(i==e.target.dataset.id) return e.target.value
-    //   else return a
-    // }))
     setAuthors(newAuthors)
-    console.log([...authors])
   }
 
   const inputHandlerTitle = e =>{
-    console.log(e.target.value)
     setTitle(e.target.value)
   }
 
   const submitHandler = e =>{
-
-    console.log('hello')
     e.preventDefault()
     const fetchSubmitedPublication= async()=>{
       const data= {year: year,
@@ -71,15 +56,14 @@ export default props => {
                    title: title,
                    venue: venue
                   }
-      console.log(data)
       const submited= await fetch('http://localhost:3000/api/publications/', {method:'post',headers: {
     'Content-Type': 'application/json;charset=utf-8'},body: JSON.stringify(data)})
       const res = await submited.json()
       err(res.errors)
-      console.log(res)
     }
 
     fetchSubmitedPublication()
+    setMonth('')
     closeFormHandler()
   }
 
